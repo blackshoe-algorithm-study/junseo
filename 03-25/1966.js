@@ -1,4 +1,3 @@
-// 8 MB	77057	44377	34991	58.468%
 // 문제
 // 여러분도 알다시피 여러분의 프린터 기기는 여러분이 인쇄하고자 하는 문서를 인쇄 명령을 받은 ‘순서대로’, 즉 먼저 요청된 것을 먼저 인쇄한다. 여러 개의 문서가 쌓인다면 Queue 자료구조에 쌓여서 FIFO - First In First Out - 에 따라 인쇄가 되게 된다. 하지만 상근이는 새로운 프린터기 내부 소프트웨어를 개발하였는데, 이 프린터기는 다음과 같은 조건에 따라 인쇄를 하게 된다.
 
@@ -21,3 +20,38 @@ const input = require("fs")
   .toString()
   .trim()
   .split("\n");
+
+let [T, ...testCases] = input;
+testCases = testCases.map((e) => e.split(" ").map(Number));
+
+function solution(T, testCases) {
+  let answer = "";
+  for (let i = 0; i < T * 2; i += 2) {
+    let count = 0;
+    let location = testCases[i][1];
+    const priorities = testCases[i + 1];
+
+    while (true) {
+      const max = Math.max(...priorities);
+      const number = priorities.shift();
+      if (number === max) {
+        count++;
+        if (location === 0) {
+          answer += count + "\n";
+          break;
+        }
+      } else {
+        priorities.push(number);
+      }
+
+      if (location === 0) {
+        location = priorities.length - 1;
+      } else {
+        location--;
+      }
+    }
+  }
+  console.log(answer.trim());
+}
+
+solution(T, testCases);
