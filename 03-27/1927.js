@@ -11,34 +11,80 @@
 // 출력
 // 입력에서 0이 주어진 횟수만큼 답을 출력한다. 만약 배열이 비어 있는 경우인데 가장 작은 값을 출력하라고 한 경우에는 0을 출력하면 된다.
 
-const input = require("fs")
+let [N, ...arr] = require("fs")
   .readFileSync("/dev/stdin")
   .toString()
   .trim()
-  .split("\n");
+  .split("\n")
+  .map(Number);
 
-let [N, ...arr] = input;
-arr = arr.map((e) => e.split(" ").map(Number));
-
-function solution(N, arr) {
-  let answer = [];
-  for (let i = 0; i < N; i++) {
-    let min = Math.min(...arr);
-    if (arr[i] == 0) {
-      if (arr.length == 0) {
-        // arr[i]가 0인데 배열이 비어 있을 경우 0 출력
-        answer.push(0);
-      } else {
-        // arr[i]가 0인데 배열이 아직 비어 있지 않을 경우
-        answer.push(min);
-        arr.shift();
-      }
-    } else {
-      // arr[i]가 자연수라면 배열에 x 추가
-      answer.push(arr[i]);
+class minHeap {
+  constructor() {
+    this.values = [];
+  }
+  insert(element) {
+    this.values.push(element);
+    this.buubleUp();
+  }
+  buubleUp() {
+    let idx = this.values.length - 1;
+    let element = this.values[idx];
+    while (idx > 0) {
+      let parentIdx = Math.floor((idx - 1) / 2);
+      let parent = this.values[parentIdx];
+      if (element >= parent) break;
+      this.values[parentIdx] = element;
+      this.values[idx] = parent;
+      idx = parentIdx;
     }
   }
-  console.log(answer);
+  extractMin() {
+    let min = this.values[0];
+    let end = this.values.pop();
+    if (this.values.length > 0) {
+      this.values[0] = end;
+      // sinkDown
+      let idx = 0;
+      let length = this.values.length;
+      let element = this.values[0];
+      while (true) {
+        let leftChildIdx = 2 * idx + 1;
+        let rightChildIdx = 2 * idx + 2;
+        let leftChild, rightChild;
+        let swap = null;
+        if (leftChildIdx < length) {
+          leftChild = this.values[leftChildIdx];
+          if (leftChild < element) {
+            swap = leftChildIdx;
+          }
+        }
+        if (rightChildIdx < length) {
+          rightChild = this.values[rightChildIdx];
+          if (
+            (swap === null && rightChild < element) ||
+            (swap !== null && rightChild < leftChild)
+          ) {
+            swap = rightChildIdx;
+          }
+        }
+        if (swap === null) break;
+        this.values[idx] = this.values[swap];
+        this.values[swap] = element;
+        idx = swap;
+      }
+    }
+    return min;
+  }
 }
+//
+let heap = new minHeap();
+let result = "";
 
-solution(N, arr);
+for (let i = 0; i < N; i++) {
+  if (arr[i] === 0) {
+    result += (heap.extractMin() || 0) + "\n";
+  } else {
+    heap.insert(arr[i]);
+  }
+}
+console.log(result.trim());
