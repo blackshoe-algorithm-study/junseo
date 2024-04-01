@@ -18,23 +18,21 @@ let [N, ...arr] = input;
 N = parseInt(N);
 arr = arr.map((e) => e.split(" ").map(Number));
 
-// 각 회의 시간이 짧을수록 최적이다.
-// 회의 별 시간 텀이 짧을수록 최적이다.
-
 function solution(N, arr) {
-  let answer = 0;
-  let result = [];
-  let start = arr.map((e) => e[0]);
-  let end = arr.map((e) => e[1]);
-  let duration = arr.map((e) => e[1] - e[0]);
-
-  arr.sort((a, b) => a[1] - a[0] - (b[1] - b[0]));
-  arr.sort((a, b) => a[1] - b[1]);
-  arr.sort((a, b) => a[0] - b[0]);
-
-  for (let i = 0; i < N; i++) {}
-
-  console.log(arr);
+  // 종료 시간이 같을 경우 시작 시간으로 오름차순 정렬
+  arr.sort((a, b) => {
+    if (a[1] === b[1]) return a[0] - b[0];
+    return a[1] - b[1];
+  });
+  let now = arr[0];
+  let answer = 1;
+  for (let i = 1; i < N; i++) {
+    let temp = arr[i];
+    if (now[1] <= temp[0]) {
+      now = arr[i];
+      answer += 1;
+    }
+  }
+  console.log(answer);
 }
-
 solution(N, arr);

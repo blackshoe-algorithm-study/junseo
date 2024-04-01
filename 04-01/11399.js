@@ -27,19 +27,7 @@ function solution(N, time) {
   let sum = 0;
   let result = [];
   time = time.sort((a, b) => a - b);
-  // P2 P5 P1 P4 P3
-  // 1 2 3 3 4
-  // 1
-  // 1 + 2 = 3
-  // 1 + 2 + 3 = 6
-  // 1 + 2 + 3 + 3 = 9
-  // 1 + 2 + 3 + 3 + 4 = 13
   for (let i = 0; i < N; i++) {
-    // 0 + 1
-    // 1 + 2
-    // 3 + 3
-    // 6 + 3
-    // 9 + 4
     sum += time[i];
     result.push(sum);
   }
