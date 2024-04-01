@@ -20,12 +20,21 @@ arr = arr.map((e) => e.split(" ").map(Number));
 
 // 각 회의 시간이 짧을수록 최적이다.
 // 회의 별 시간 텀이 짧을수록 최적이다.
-//
 
 function solution(N, arr) {
   let answer = 0;
+  let result = [];
+  let start = arr.map((e) => e[0]);
+  let end = arr.map((e) => e[1]);
+  let duration = arr.map((e) => e[1] - e[0]);
 
-  console.log(answer);
+  arr.sort((a, b) => a[1] - a[0] - (b[1] - b[0]));
+  arr.sort((a, b) => a[1] - b[1]);
+  arr.sort((a, b) => a[0] - b[0]);
+
+  for (let i = 0; i < N; i++) {}
+
+  console.log(arr);
 }
 
 solution(N, arr);
