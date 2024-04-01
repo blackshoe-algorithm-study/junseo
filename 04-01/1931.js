@@ -6,3 +6,26 @@
 
 // 출력
 // 첫째 줄에 최대 사용할 수 있는 회의의 최대 개수를 출력한다.
+
+let input = require("fs")
+  .readFileSync("/dev/stdin")
+  .toString()
+  .trim()
+  .split("\n");
+
+let [N, ...arr] = input;
+
+N = parseInt(N);
+arr = arr.map((e) => e.split(" ").map(Number));
+
+// 각 회의 시간이 짧을수록 최적이다.
+// 회의 별 시간 텀이 짧을수록 최적이다.
+//
+
+function solution(N, arr) {
+  let answer = 0;
+
+  console.log(answer);
+}
+
+solution(N, arr);
