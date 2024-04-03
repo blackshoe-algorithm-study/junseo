@@ -12,3 +12,28 @@
 
 // 출력
 // 첫째 줄에 B진법 수 N을 10진법으로 출력한다.
+
+let [N, B] = require("fs")
+  .readFileSync("/dev/stdin")
+  .toString()
+  .trim()
+  .split(" ");
+
+let char = N.split("").reverse();
+let base = Number(B);
+
+function solution(char, base) {
+  let answer = 0;
+
+  for (let i = 0; i < char.length; i++) {
+    if (char[i] >= "A" && char[i] <= "Z") {
+      char[i] = char[i].charCodeAt(0) - 55;
+      answer += char[i] * Math.pow(base, i);
+    } else {
+      answer += +char[i] * Math.pow(base, i);
+    }
+  }
+  console.log(answer);
+}
+
+solution(char, base);
