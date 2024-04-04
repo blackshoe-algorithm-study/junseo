@@ -15,19 +15,61 @@ let input = require("fs")
 
 let [N, comp, M, arr] = input;
 
-comp = comp.split(" ").map(Number);
+comp = comp
+  .split(" ")
+  .map(Number)
+  .sort((a, b) => a - b);
 arr = arr.split(" ").map(Number);
 
 function solution(N, comp, M, arr) {
   let answer = "";
-  for (let i = 0; i < +M; i++) {
-    if (comp.indexOf(arr[i]) !== -1) {
+
+  arr.forEach((target) => {
+    let left = 0;
+    let right = N - 1;
+    let result = false;
+    while (left <= right) {
+      let mid = Math.floor((left + right) / 2);
+      if (target > comp[mid]) {
+        left = mid + 1;
+      } else if (target < comp[mid]) {
+        right = mid - 1;
+      } else {
+        result = true;
+        break;
+      }
+    }
+    if (result === true) {
       answer += 1 + "\n";
     } else {
       answer += 0 + "\n";
     }
-  }
+  });
+
   console.log(answer.trim());
 }
 
-solution(N, comp, M, arr);
+solution(+N, comp, +M, arr);
+
+// 숏코딩 해답
+// let input = require("fs")
+//   .readFileSync("/dev/stdin")
+//   .toString()
+//   .trim()
+//   .split("\n");
+
+// let [N, comp, M, arr] = input;
+
+// comp = comp
+//   .split(" ")
+//   .map(Number)
+//   .sort((a, b) => a - b);
+// arr = arr.split(" ").map(Number);
+
+// function solution(N, comp, M, arr) {
+//   comp = new Set(comp);
+//   let answer = arr.map((target) => comp.has(target) ? 1 : 0);
+//   console.log(answer.join("\n"));
+// }
+
+// solution(+N, comp, +M, arr);
