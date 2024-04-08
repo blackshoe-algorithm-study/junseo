@@ -37,20 +37,15 @@ function solution(A, B, C, M) {
   let hour = 0;
 
   // 피로도 맥스는 1시간 당 피로도 생산율은 넘어선 안 된다.
-  while (hour < 24 && A <= M) {
-    if (fatigue >= M) {
-      // 피로도 맥스 초과 시
-      hour++;
-      fatigue -= C;
-    } else if (fatigue >= 0) {
-      // 피로도 여유 있을 떄
-      hour++;
+  while (hour < 24) {
+    if (fatigue + A <= M) {
       fatigue += A;
       maxWork += B;
+    } else {
+      fatigue -= C;
+      if (fatigue < 0) fatigue = 0;
     }
-    if (fatigue < 0) {
-      fatigue = 0;
-    }
+    hour++;
   }
   console.log(maxWork);
 }
