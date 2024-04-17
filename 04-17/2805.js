@@ -13,7 +13,7 @@ function solution(N, M, height) {
 
   // 나무 최대, 최소 초기화
   let high = height[0];
-  let row = height[N - 1];
+  let low = height[N - 1];
 
   // 자른 나무 높이 총합
   let sum = 0;
@@ -23,13 +23,13 @@ function solution(N, M, height) {
     }
     if (sum > M) {
       // 만약 총합이 목표보다 높으면
-      row = mid;
+      low = mid;
       mid = (high + mid) / 2;
       sum = 0;
     } else if (sum < M) {
       // 만약 총합이 목표보다 낮으면
       high = mid;
-      mid = (row + mid) / 2;
+      mid = (low + mid) / 2;
       sum = 0;
     } else {
       answer = mid;
