@@ -36,7 +36,6 @@ function solution(A, B, C, M) {
   let fatigue = 0;
   let hour = 0;
 
-  // 피로도 맥스는 1시간 당 피로도 생산율은 넘어선 안 된다.
   while (hour < 24) {
     if (fatigue + A <= M) {
       fatigue += A;
