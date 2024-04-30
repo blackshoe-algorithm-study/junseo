@@ -1,46 +1,51 @@
 //
-let [count, ...boxes] = require("fs")
-  .readFileSync(0)
-  .toString()
-  .trim()
-  .split("\n");
+let input = require("fs").readFileSync(0).toString().trim().split("\n");
 
-let [M, N] = count.split(" ").map(Number);
-boxes = boxes.map((e) => e.split(" ").map(Number));
-
-let ripe = [...Array(N)].map((e) => Array(M).fill(0));
-console.log(ripe);
 const ds = [
   [-1, 0],
   [1, 0],
-  [0, -1],
   [0, 1],
+  [0, -1],
 ];
+const [M, N] = input[0].split(" ").map(Number);
+let queue = [];
+let visit = [...Array(N)].map((e) => Array(M).fill(0));
+let count = M * N;
+let answer;
 
-function solution(M, N, boxes) {
-  let queue = [];
+// 초기 상태 세팅
+for (let i = 1; i < input.length; i++) {
+  let box = input[i].split(" ").map(Number);
 
-  for (let i = 0; i < N; i++) {
-    let x = boxes[i].filter((tomato) => tomato === 1);
-    if (x !== -1) queue.push([i, x]);
-  }
-
-  // 토마토가 모두 익지 못하는 상황
-  if (!queue.length) console.log(-1);
-
-  // 토마토가 모두 익어있는 상태
-  if (queue.length === N * M) console.log(0);
-
-  while (queue.length) {
-    const [curY, curX] = queue.shift();
-
-    // for (let i = 0; i < 4; i++) {}
-
-    // 다음 위치가 상자 밖으로 벗어나지 않고 토마토가 익지 않았으면(0)
-    // if (ny >= 0 && ny < N && nx >= 0 && nx < M && boxes[ny][nx] === 0) {
-    //   boxes[ny][nx] = 1; // 익음 처리
-    // }
-  }
+  box.forEach((tomato, idx) => {
+    if (tomato === 1) {
+      queue.push([i - 1, idx, 0]);
+      visit[i - 1][idx] = 1;
+      count--;
+    } else if (tomato === -1) {
+      visit[i - 1][idx] = 1;
+      count--;
+    }
+  });
 }
 
-solution(M, N, boxes);
+let idx = 0;
+while (queue.length != idx) {
+  const [x, y, pos] = queue[idx];
+  for (let i = 0; i < 4; i++) {
+    const xPos = x + ds[i][0];
+    const yPos = y + ds[i][1];
+
+    if (xPos < 0 || yPos < 0 || xPos >= N || yPos >= M) continue;
+    if (!visit[xPos][yPos]) {
+      visit[xPos][yPos] = 1;
+      queue.push([xPos, yPos, pos + 1]);
+      count--;
+    }
+  }
+
+  idx++;
+  answer = pos;
+}
+
+console.log(count ? -1 : answer);
