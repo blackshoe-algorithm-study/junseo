@@ -1,18 +1,15 @@
 //
-let [N, ...arr] = require("fs").readFileSync(0).toString().trim().split("\n");
+let [N, ...costs] = require("fs").readFileSync(0).toString().trim().split("\n");
 
-arr = arr.map((e) => e.split(" ").map(Number));
+costs = costs.map((e) => e.split(" ").map(Number));
 
-// 빨강 - 초록 - 파랑
-
-function solution(N, arr) {
-  let min = 0;
-
-  arr.forEach((e) => {
-    let red = e[0];
-    let green = e[1];
-    let blue = e[2];
-  });
+function solution(N, costs) {
+  for (let i = 1; i < N; i++) {
+    costs[i][0] += Math.min(costs[i - 1][1], costs[i - 1][2]);
+    costs[i][1] += Math.min(costs[i - 1][0], costs[i - 1][2]);
+    costs[i][2] += Math.min(costs[i - 1][0], costs[i - 1][1]);
+  }
+  console.log(Math.min(...costs[N - 1]));
 }
 
-solution(+N, arr);
+solution(+N, costs);
