@@ -4,47 +4,59 @@ let [NM, ...relations] = require("fs")
   .toString()
   .trim()
   .split("\n");
-let [N, M] = NM.split(" ").map(Number);
+const [N, M] = NM.split(" ").map(Number);
 relations = relations.map((e) => e.split(" ").map(Number));
 
 function solution(N, M, relations) {
   const graph = Array.from({ length: N + 1 }, () => []);
-  const hackableCounts = Array(N + 1).fill(0);
-
   relations.forEach(([A, B]) => {
     graph[B].push(A);
   });
 
-  const dfs = (node, visited) => {
-    visited[node] = true;
-    let count = 1;
+  console.log("Graph:", graph);
 
-    for (const next of graph[node]) {
-      if (!visited[next]) {
-        count += dfs(next, visited);
+  let max = 0; // 최대 해킹 컴퓨터 수
+  let answer = [];
+
+  const dfs = (n) => {
+    let hacked = new Array(N + 1).fill(0);
+    let count = 1; // 해킹된 컴퓨터 수
+    let stack = [n]; // DFS 탐색 스택
+
+    console.log(`Starting DFS for node ${n}`);
+    hacked[n] = 1;
+    console.log("Initial hacked array:", hacked);
+
+    while (stack.length) {
+      const value = stack.pop();
+      console.log(`Popped ${value} from stack`);
+      for (let i = 0; i < graph[value].length; i++) {
+        if (!hacked[graph[value][i]]) {
+          count += 1;
+          hacked[graph[value][i]] = 1;
+          stack.push(graph[value][i]);
+          console.log(`Hacked ${graph[value][i]} and added to stack`);
+        }
       }
     }
 
-    return count;
+    console.log(`Total hacked count from node ${n}:`, count);
+
+    if (max < count) {
+      max = count;
+      answer = [n];
+      console.log(`New max found: ${max}, answer updated:`, answer);
+    } else if (max === count) {
+      answer.push(n);
+      console.log(`Max matched: ${max}, answer updated:`, answer);
+    }
   };
 
-  let maxHackable = 0;
-
   for (let i = 1; i <= N; i++) {
-    const visited = Array(N + 1).fill(false);
-    const count = dfs(i, visited);
-    hackableCounts[i] = count;
-    maxHackable = Math.max(maxHackable, count);
+    dfs(i);
   }
 
-  const result = [];
-  for (let i = 1; i <= N; i++) {
-    if (hackableCounts[i] === maxHackable) {
-      result.push(i);
-    }
-  }
-
-  console.log(result.join(" "));
+  console.log(answer.join(" "));
 }
 
 solution(N, M, relations);
