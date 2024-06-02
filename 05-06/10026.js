@@ -25,6 +25,22 @@ function solution(N, arr) {
     }
   };
 
+  // const bfs = (curX, curY) => {
+  //   const queue = [[curX, curY]];
+  //   while (queue.length) {
+  //     const [curX, curY] = queue.shift();
+  //     for (const [dx, dy] of offset) {
+  //       const nx = curX + dx;
+  //       const ny = curY + dy;
+  //       if (nx < 0 || nx >= N || ny < 0 || ny >= N || visited[nx][ny]) continue;
+  //       if (arr[curX][curY] === arr[nx][ny]) {
+  //         visited[nx][ny] = true;
+  //         queue.push([nx, ny]);
+  //       }
+  //     }
+  //   }
+  // };
+
   // 적록색약 아닌 경우
   let rgb = 0;
   for (let i = 0; i < N; i++) {
