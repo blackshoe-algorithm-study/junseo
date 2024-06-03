@@ -9,15 +9,18 @@ const offset = [
   [0, -1],
 ];
 
-const dfs = (curX, curY) => {
-  graph[curX][curY] = 0;
+const bfs = (curY, curX) => {
+  const queue = [[curY, curX]];
+  while (queue.length) {
+    const [curY, curX] = queue.shift();
+    for (const [dx, dy] of offset) {
+      const nx = curX + dx;
+      const ny = curY + dy;
 
-  for (const [dx, dy] of offset) {
-    const nx = curX + dx;
-    const ny = curY + dy;
-
-    if (nx >= 0 && nx < N && ny >= 0 && ny < M && graph[nx][ny]) {
-      dfs(nx, ny);
+      if (nx >= 0 && nx < M && ny >= 0 && ny < N && graph[ny][nx]) {
+        graph[ny][nx] = 0;
+        queue.push([ny, nx]);
+      }
     }
   }
 };
@@ -27,7 +30,7 @@ function solution() {
   for (let i = 0; i < N; i++) {
     for (let j = 0; j < M; j++) {
       if (graph[i][j]) {
-        dfs(i, j);
+        bfs(i, j);
         answer++;
       }
     }
