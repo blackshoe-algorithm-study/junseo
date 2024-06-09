@@ -22,14 +22,12 @@ function solution(R, C, alphabets) {
   const dfs = (x, y, count) => {
     let maxCount = count;
     visited[alphabets[x][y]] = true;
-
     for (const [dx, dy] of directions) {
       const nx = x + dx;
       const ny = y + dy;
       if (nx >= 0 && nx < R && ny >= 0 && ny < C && !visited[alphabets[nx][ny]])
         maxCount = Math.max(maxCount, dfs(nx, ny, count + 1));
     }
-
     visited[alphabets[x][y]] = false;
     return maxCount;
   };
