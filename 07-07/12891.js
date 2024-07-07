@@ -5,43 +5,33 @@ const [S, P] = SP.split(" ").map(Number);
 DNA = DNA.split("");
 mins = mins.split(" ").map(Number);
 
-const password = [];
-for (let i = 0; i < S; i++) {
-  let string = DNA[i];
-  for (let j = i + 1; j < S; j++) {
-    if (string.length <= P) string += DNA[j];
-    if (string.length === P) {
-      password.push(string);
-      break;
-    }
-  }
+const countCurrent = { A: 0, C: 0, G: 0, T: 0 };
+const countMin = { A: mins[0], C: mins[1], G: mins[2], T: mins[3] };
+
+let countValid = 0;
+
+// 초기 윈도우 설정
+for (let i = 0; i < P; i++) {
+  countCurrent[DNA[i]]++;
 }
 
-let count = 0;
-password.forEach((pwd) => {
-  let [A, C, G, T] = mins;
-  // pwd = 'CCTGGATT', 'CTGGATTG'
-  const chars = pwd.split("");
-  chars.forEach((char) => {
-    // char = 'C', 'C', 'T', ...
-    switch (char) {
-      case "A":
-        A--;
-        break;
-      case "C":
-        C--;
-        break;
-      case "G":
-        G--;
-        break;
-      case "T":
-        T--;
-        break;
-      default:
-        break;
-    }
-  });
-  if (A <= 0 && C <= 0 && G <= 0 && T <= 0) count++;
-});
+// 초기 윈도우의 유효성 검사
+function isValid() {
+  return (
+    countCurrent["A"] >= countMin["A"] &&
+    countCurrent["C"] >= countMin["C"] &&
+    countCurrent["G"] >= countMin["G"] &&
+    countCurrent["T"] >= countMin["T"]
+  );
+}
 
-console.log(count);
+if (isValid()) countValid++;
+
+// 슬라이딩 윈도우를 사용해 문자열을 검사
+for (let i = P; i < S; i++) {
+  countCurrent[DNA[i]]++;
+  countCurrent[DNA[i - P]]--;
+  if (isValid()) countValid++;
+}
+
+console.log(countValid);
