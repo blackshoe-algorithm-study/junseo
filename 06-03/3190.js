@@ -1,9 +1,5 @@
 //
-let [N, ...input] = require("fs")
-  .readFileSync("/dev/stdin")
-  .toString()
-  .trim()
-  .split("\n");
+let [N, ...input] = require("fs").readFileSync(0).toString().trim().split("\n");
 
 const K = +input.shift();
 let apples = [];
