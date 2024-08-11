@@ -18,6 +18,7 @@ const directions = [
 function dijkstra([distance, curX, curY]) {
   let visited = Array.from({ length: N }, () => Array(M).fill(false));
   const breaked = Array.from({ length: N }, () => Array(M).fill(Infinity));
+  visited[curX][curY] = true;
   breaked[0][0] = 0;
 
   const queue = [[distance, curX, curY]];
