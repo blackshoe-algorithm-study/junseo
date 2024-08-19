@@ -24,6 +24,7 @@ function dijkstra(start) {
   while (idx < pq.length) {
     const [time, node] = pq[idx++];
 
+    // 현재 노드까지의 기록된 최소 비용이 현재 비용보다 작으면 이 경로는 무시
     if (distances[node] < time) continue;
 
     graph[node].forEach(([nextNode, nextTime]) => {
