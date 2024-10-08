@@ -11,7 +11,6 @@ const len2 = str2.length;
 // DP 테이블 생성 (문자열 길이에 맞춰 2차원 배열)
 const dp = Array.from({ length: len1 + 1 }, () => Array(len2 + 1).fill(0));
 
-// DP 계산
 for (let i = 1; i <= len1; i++) {
   for (let j = 1; j <= len2; j++) {
     if (str1[i - 1] === str2[j - 1]) {
@@ -24,5 +23,4 @@ for (let i = 1; i <= len1; i++) {
   }
 }
 
-// 최종 LCS 길이 출력
 console.log(dp[len1][len2]);
