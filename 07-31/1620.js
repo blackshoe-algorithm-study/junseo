@@ -18,4 +18,4 @@ quest.forEach((e) => {
   else answer.push(pocketmons[+e - 1]);
 });
 
-// console.log(answer.join("\n"));
+console.log(answer.join("\n"));
